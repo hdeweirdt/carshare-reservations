@@ -1,0 +1,13 @@
+package be.harm.carshare.reservations;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CarshareReservationsApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
