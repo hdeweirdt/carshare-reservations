@@ -18,9 +18,29 @@ class ReservationJPAService implements ReservationService {
     }
 
     @Override
+    public Set<Reservation> findAllByUserId(Long userId) {
+        return reservationRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Set<Reservation> findByUserIdAndCarId(Long userId, Long carId) {
+        return reservationRepository.findByUserIdAndCarId(userId,carId);
+    }
+
+    @Override
     public Reservation save(Reservation reservation) {
         // TODO: add checking of times
         return reservationRepository.save(reservation);
+    }
+
+    @Override
+    public void update(Reservation reservation) {
+        reservationRepository.save(reservation);
+    }
+
+    @Override
+    public void delete(Reservation reservation) {
+        reservationRepository.delete(reservation);
     }
 
 }
