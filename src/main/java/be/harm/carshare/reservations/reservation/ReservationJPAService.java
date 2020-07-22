@@ -1,7 +1,9 @@
 package be.harm.carshare.reservations.reservation;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -29,7 +31,7 @@ class ReservationJPAService implements ReservationService {
     }
 
     @Override
-    public Reservation save(Reservation newReservation) {
+    public Reservation save(@Valid @RequestBody Reservation newReservation) {
         if (overlapsWithCurrentReservations(newReservation)) {
             throw new IllegalArgumentException("New reservation overlaps with existing!");
         } else {

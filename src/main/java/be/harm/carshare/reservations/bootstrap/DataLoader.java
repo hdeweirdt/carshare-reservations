@@ -3,10 +3,12 @@ package be.harm.carshare.reservations.bootstrap;
 import be.harm.carshare.reservations.reservation.Reservation;
 import be.harm.carshare.reservations.reservation.ReservationService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+@Profile("local | dev")
 @Component
 public class DataLoader implements CommandLineRunner {
     private final ReservationService reservationService;
@@ -18,6 +20,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (reservationService.findAllByCarId(1L).isEmpty()) {
+            System.out.println("Loading testing set of reservations");
             saveReservations();
         }
     }
@@ -26,11 +29,10 @@ public class DataLoader implements CommandLineRunner {
     private void saveReservations() {
         reservationService.save(
                 Reservation.builder()
-                        .id(1L)
                         .carId(1L)
                         .userId(1L)
-                        .start(LocalDateTime.of(2020, 1, 1, 10, 30))
-                        .end(LocalDateTime.of(2020, 1, 2, 10, 30))
+                        .start(LocalDateTime.of(2023, 1, 1, 10, 30))
+                        .end(LocalDateTime.of(2023, 1, 2, 10, 30))
                         .build());
     }
 }

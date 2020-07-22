@@ -4,6 +4,10 @@ import be.harm.carshare.reservations.DateUtils;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,19 +22,28 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Null
     @Getter
     private Long id;
 
     @Getter
+    @NotNull
+    @Positive
     private Long userId;
 
     @Getter
+    @NotNull
+    @Positive
     private Long carId;
 
     @Getter
+    @NotNull
+    @Future
     private LocalDateTime start;
 
     @Getter
+    @NotNull
+    @Future
     private LocalDateTime end;
 
     public boolean overLapsWith(Reservation other) {
