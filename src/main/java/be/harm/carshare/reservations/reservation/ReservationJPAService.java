@@ -3,6 +3,7 @@ package be.harm.carshare.reservations.reservation;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 @Service
 class ReservationJPAService implements ReservationService {
@@ -24,13 +25,22 @@ class ReservationJPAService implements ReservationService {
 
     @Override
     public Set<Reservation> findByUserIdAndCarId(Long userId, Long carId) {
-        return reservationRepository.findByUserIdAndCarId(userId,carId);
+        return reservationRepository.findByUserIdAndCarId(userId, carId);
     }
 
     @Override
-    public Reservation save(Reservation reservation) {
-        // TODO: add checking of times
-        return reservationRepository.save(reservation);
+    public Reservation save(Reservation newReservation) {
+        if (overlapsWithCurrentReservations(newReservation)) {
+            throw new IllegalArgumentException("New reservation overlaps with existing!");
+        } else {
+            return reservationRepository.save(newReservation);
+        }
+    }
+
+    private boolean overlapsWithCurrentReservations(Reservation newReservation) {
+        Iterable<Reservation> currentReservations = reservationRepository.findAll();
+        return StreamSupport.stream(currentReservations.spliterator(), false)
+                .anyMatch(currentReservation -> currentReservation.overLapsWith(newReservation));
     }
 
     @Override

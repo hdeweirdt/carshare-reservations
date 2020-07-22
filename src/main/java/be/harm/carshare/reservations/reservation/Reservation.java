@@ -1,5 +1,6 @@
 package be.harm.carshare.reservations.reservation;
 
+import be.harm.carshare.reservations.DateUtils;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,5 +32,21 @@ public class Reservation {
 
     @Getter
     private LocalDateTime end;
+
+    public boolean overLapsWith(Reservation other) {
+        if (DateUtils.dateIsBetween(other.getEnd(), this.getStart(), this.getEnd())) {
+            return true;
+        }
+        if (DateUtils.dateIsBetween(other.getStart(), this.getStart(), this.getEnd())) {
+            return true;
+        }
+        if (other.getStart().isBefore(this.getStart()) && other.getEnd().isAfter(this.getEnd())) {
+            return true;
+        }
+        if (other.getStart().isEqual(this.getStart()) && other.getEnd().isEqual(this.getEnd())) {
+            return true;
+        }
+        return false;
+    }
 
 }
