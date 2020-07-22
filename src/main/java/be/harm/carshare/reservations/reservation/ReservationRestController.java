@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -19,15 +20,15 @@ public class ReservationRestController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<Reservation>> getReservations(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long carId) {
-        if (userId != null && carId == null) {
-            return new ResponseEntity<>(reservationService.findAllByUserId(userId), HttpStatus.OK);
-        }
-        if (carId != null && userId == null) {
-            return new ResponseEntity<>(reservationService.findAllByCarId(carId), HttpStatus.OK);
-        }
-        if (carId != null && userId != null) {
-            return new ResponseEntity<>(reservationService.findByUserIdAndCarId(userId, carId), HttpStatus.OK);
+    public ResponseEntity<Set<Reservation>> getReservations(
+            Optional<Long> userId,
+            Optional<Long> carId) {
+        if (userId.isPresent() && carId.isEmpty()) {
+            return new ResponseEntity<>(reservationService.findAllByUserId(userId.get()), HttpStatus.OK);
+        } else if (carId.isPresent() && userId.isEmpty()) {
+            return new ResponseEntity<>(reservationService.findAllByCarId(carId.get()), HttpStatus.OK);
+        } else if (carId.isPresent() && userId.isPresent()) {
+            return new ResponseEntity<>(reservationService.findByUserIdAndCarId(userId.get(), carId.get()), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
