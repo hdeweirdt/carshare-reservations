@@ -11,4 +11,7 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
     Set<Reservation> findByCarId(Long id);
 
     Set<Reservation> findByUserId(Long id);
+
+    @Override
+    void deleteById(Long id);
 }

@@ -2,6 +2,7 @@ package be.harm.carshare.reservations.bootstrap;
 
 import be.harm.carshare.reservations.reservation.Reservation;
 import be.harm.carshare.reservations.reservation.ReservationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Profile("local | dev")
+@Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
     private final ReservationService reservationService;
@@ -20,7 +22,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (reservationService.findAllByCarId(1L).isEmpty()) {
-            System.out.println("Loading testing set of reservations");
+            log.info("Loading testing set of reservations");
             saveReservations();
         }
     }

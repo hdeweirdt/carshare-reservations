@@ -1,5 +1,8 @@
 package be.harm.carshare.reservations.reservation;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
+@Slf4j
 @RequestMapping(ReservationRestController.ENDPOINT)
 public class ReservationRestController {
     protected static final String ENDPOINT = "/reservations";
@@ -34,7 +38,9 @@ public class ReservationRestController {
     }
 
     @PostMapping
-    public ResponseEntity registerReservationForCar(@RequestBody Reservation reservation) {
+    public ResponseEntity registerReservation(@RequestBody Reservation reservation) {
+        log.info("New reservation coming in: {}", reservation);
+
         var savedReservation = reservationService.save(reservation);
 
         HttpHeaders headers = new HttpHeaders();
@@ -46,12 +52,14 @@ public class ReservationRestController {
     @PutMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateReservation(@PathVariable Long reservationId, Reservation reservation) {
+        log.info("Updating reservation: {}", reservation);
         reservationService.update(reservation);
     }
 
     @DeleteMapping("/{reservationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteReservation(@PathVariable Long reservationId, Reservation reservation) {
-        reservationService.delete(reservation);
+    public void deleteReservation(@PathVariable Long reservationId) {
+        log.info("Deleting reservation with iD: {}", reservationId);
+        reservationService.delete(reservationId);
     }
 }

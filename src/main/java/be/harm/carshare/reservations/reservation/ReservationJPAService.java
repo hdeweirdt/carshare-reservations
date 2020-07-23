@@ -51,8 +51,8 @@ class ReservationJPAService implements ReservationService {
     }
 
     @Override
-    public void delete(Reservation reservation) {
-        reservationRepository.delete(reservation);
+    public void delete(Long reservationId) {
+        reservationRepository.deleteById(reservationId);
     }
 
 }
