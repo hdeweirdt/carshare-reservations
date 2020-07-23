@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
     <property name="LOGS" value="./logs" />
 
     <appender name="Console"
@@ -12,13 +14,10 @@
         </layout>
     </appender>
 
-    <appender name="RollingFile"
+    <appender name="RollingJSONFile"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS}/carshare-reservations.log</file>
-        <encoder
-                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-        </encoder>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
 
         <rollingPolicy
                 class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -34,13 +33,13 @@
 
     <!-- LOG everything at INFO level -->
     <root level="info">
-        <appender-ref ref="RollingFile" />
+        <appender-ref ref="RollingJSONFile" />
         <appender-ref ref="Console" />
     </root>
 
     <!-- LOG own packages at TRACE level -->
     <logger name="be.harm.carshare" level="trace" additivity="false">
-        <appender-ref ref="RollingFile" />
+        <appender-ref ref="RollingJSONFile" />
         <appender-ref ref="Console" />
     </logger>
 
